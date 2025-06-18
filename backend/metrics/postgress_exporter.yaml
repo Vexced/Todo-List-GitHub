@@ -1,0 +1,8 @@
+  postgres_exporter:
+    image: prometheuscommunity/postgres-exporter
+    environment:
+      DATA_SOURCE_NAME: "postgresql://devops:devops123@db:5432/tododb?sslmode=disable"
+    ports:
+      - "9187:9187"
+    depends_on:
+      - db
