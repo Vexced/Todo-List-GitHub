@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-
+import './App.css'; // Import Tailwind CSS styles
 function App() {
   const [todos, setTodos] = useState([]);
   const [task, setTask] = useState('');

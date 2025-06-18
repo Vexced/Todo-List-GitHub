@@ -1,34 +1,39 @@
+version: "3.9"
+
 services:
-  postgres:
+  db:
     image: postgres:14
+    restart: always
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: todoapp
-    volumes:
-      - pgdata:/var/lib/postgresql/data
+      POSTGRES_USER: devops
+      POSTGRES_PASSWORD: devops
+      POSTGRES_DB: tododb
     ports:
       - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
 
   backend:
-    build: ./todo-backend
+    build: ./backend
+    restart: always
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: tododb
+      DB_USER: devops
+      DB_PASSWORD: devops
     ports:
       - "4000:4000"
-    environment:
-      - DB_HOST=postgres
-      - DB_USER=postgres
-      - DB_PASS=postgres
-      - DB_NAME=todoapp
-      - DB_PORT=5432
-    depends_on:
-      - postgres
+    command: ["node", "src/index.js"]
 
   frontend:
-    build: ./todo-frontend
+    build: ./frontend
     ports:
       - "3000:80"
-    depends_on:
-      - backend
+    # NO necesita volumes ni command
+    # porque ya sirves con NGINX
 
 volumes:
   pgdata:
