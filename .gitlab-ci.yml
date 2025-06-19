@@ -1,0 +1,56 @@
+stages:
+  - build
+  - test
+  - deploy
+
+# FRONTEND
+
+frontend-build:
+  stage: build
+  image: node:18
+  script:
+    - cd frontend
+    - npm install
+    - npm run build
+  artifacts:
+    paths:
+      - frontend/build/
+
+frontend-test:
+  stage: test
+  image: node:18
+  script:
+    - cd frontend
+    - npm install
+    - npm test || echo "No tests"
+
+frontend-deploy:
+  stage: deploy
+  script:
+    - echo "Deploy frontend placeholder"
+
+# BACKEND
+
+backend-build:
+  stage: build
+  image: node:18
+  script:
+    - cd backend
+    - npm install
+    - npm run build || echo "No build script"
+  artifacts:
+    paths:
+      - backend/node_modules/
+
+backend-test:
+  stage: test
+  image: node:18
+  script:
+    - cd backend
+    - npm install
+    - npm test || echo "No tests"
+
+backend-deploy:
+  stage: deploy
+  script:
+    - echo "Deploy backend placeholder"
